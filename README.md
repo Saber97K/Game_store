@@ -14,3 +14,8 @@ Jakarta annotations for validation, persistence, and transactions
 Entity lifecycle hooks using @PrePersist, @PreUpdate
 
 Basic transactional behavior using @Transactional
+
+Future:
+JWT token and Spring Security
+Testing (Bean mocking)
+Servlet
