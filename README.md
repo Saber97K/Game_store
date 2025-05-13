@@ -1,15 +1,16 @@
-Spring Boot Game API project (Self study)
-REST API’s
-Postgre SQL / JPQL 
-Transactional / Event Listeners
-Jakarta (persistence, annotation, validaiton)
+✅ Features
+REST API with CRUD operations for games and categories
 
-Soon:
+Spring Boot 3 with layered architecture (Controller → Service → Repository)
 
-Spring Security
-Jwt Tokenization
+PostgreSQL integration with Spring Data JPA
 
-Further:
-Testing (Bean mock, mockito)
-Maybe revise more on patterns (Cascade Refresh, Cascade Detach). 
-Need to check out Servlet. (Context etc)
+Custom queries using JPQL
+
+MapStruct for DTO <-> Entity mapping
+
+Jakarta annotations for validation, persistence, and transactions
+
+Entity lifecycle hooks using @PrePersist, @PreUpdate
+
+Basic transactional behavior using @Transactional
