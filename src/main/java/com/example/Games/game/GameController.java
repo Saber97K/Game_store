@@ -1,8 +1,12 @@
 package com.example.Games.game;
 
+import com.example.Games.game.dto.CreateRequest;
+import com.example.Games.game.dto.Response;
+import com.example.Games.game.dto.UpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -16,24 +20,27 @@ public class GameController {
     private final GameService gameService;
 
     @PostMapping
-    public ResponseEntity<GameResponse> create(@RequestBody @Valid GameRequest request) {
+    @PreAuthorize("hasAuthority('ROLE_DEVELOPER')")
+    public ResponseEntity<Response> create(@RequestBody @Valid CreateRequest request) {
         return ResponseEntity.ok(gameService.createGame(request));
     }
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_DEVELOPER')")
+    public ResponseEntity<Response> update(@PathVariable Long id, @RequestBody @Valid UpdateRequest request) {
+        return ResponseEntity.ok(gameService.updateGame(id, request));
+    }
+
     @GetMapping
-    public ResponseEntity<List<GameResponse>> getAll() {
+    public ResponseEntity<List<Response>> getAll() {
         return ResponseEntity.ok(gameService.getAllGames());
     }
 
     @GetMapping("/{title}")
-    public ResponseEntity<GameResponse> getByTitle(@PathVariable String title) {
+    public ResponseEntity<Response> getByTitle(@PathVariable String title) {
         return ResponseEntity.ok(gameService.getGameById(title));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<GameResponse> update(@PathVariable Long id, @RequestBody @Valid GameRequest request) {
-        return ResponseEntity.ok(gameService.updateGame(id, request));
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -42,17 +49,17 @@ public class GameController {
     }
 
     @GetMapping("/search/author")
-    public ResponseEntity<List<GameResponse>> searchByAuthor(@RequestParam String author) {
+    public ResponseEntity<List<Response>> searchByAuthor(@RequestParam String author) {
         return ResponseEntity.ok(gameService.searchGamesByAuthorNative(author));
     }
 
     @GetMapping("/search/title")
-    public ResponseEntity<List<GameResponse>> searchByTitle(@RequestParam String title) {
+    public ResponseEntity<List<Response>> searchByTitle(@RequestParam String title) {
         return ResponseEntity.ok(gameService.searchByTitle(title));
     }
 
     @GetMapping("/filter/price")
-    public ResponseEntity<List<GameResponse>> filterByPriceRange(
+    public ResponseEntity<List<Response>> filterByPriceRange(
             @RequestParam BigDecimal min,
             @RequestParam BigDecimal max
     ) {
@@ -60,7 +67,7 @@ public class GameController {
     }
 
     @GetMapping("/sorted")
-    public ResponseEntity<List<GameResponse>> getSorted() {
+    public ResponseEntity<List<Response>> getSorted() {
         return ResponseEntity.ok(gameService.getGamesSortedByPrice());
     }
 }

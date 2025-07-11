@@ -1,4 +1,4 @@
-package com.example.Games.common;
+package com.example.Games.config.common;
 
 import com.example.Games.category.Category;
 import com.example.Games.category.CategoryResponse;

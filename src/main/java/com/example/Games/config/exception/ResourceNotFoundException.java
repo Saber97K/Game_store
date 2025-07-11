@@ -1,4 +1,4 @@
-package com.example.Games.exception;
+package com.example.Games.config.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

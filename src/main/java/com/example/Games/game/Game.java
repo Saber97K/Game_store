@@ -1,39 +1,40 @@
 package com.example.Games.game;
 
 import com.example.Games.category.Category;
+import com.example.Games.rating.RatingLabel;
+import com.example.Games.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
-@EntityListeners(AuditingEntityListener.class)
-
+//@EnableJpaAuditing
+//@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Game {
 
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "game_seq")
-    @SequenceGenerator(name = "game_seq", sequenceName = "game_sequence", allocationSize = 5)
+    @SequenceGenerator(name = "game_seq", sequenceName = "game_sequence", allocationSize = 2)
     private Long id;
-
     private String title;
-    private String author;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
     private BigDecimal price;
-    private LocalDateTime releaseDate;
-    private BigDecimal rating;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id")
     private Category category;
-
 
     //@CreatedDate
     //@Column(updatable = false)
@@ -54,26 +55,24 @@ public class Game {
         updatedAt = LocalDateTime.now();
     }
 
-
-    @Builder
-    public Game(String title, String author, BigDecimal price, LocalDateTime releaseDate, BigDecimal rating, Category category) {
-        this.title = title;
-        this.author = author;
-        this.price = price;
-        this.releaseDate = releaseDate;
-        this.rating = rating;
-        this.category = category;
+    public static Game of(String title, BigDecimal price, Category category){
+        Game game = new Game();
+        game.title = title;
+        game.price = price;
+        game.category = category;
+        return game;
     }
 
 
-    public static Game of(String title, String author, BigDecimal price, LocalDateTime releaseDate, BigDecimal rating, Category category){
-        Game game = new Game();
-        game.title = title;
-        game.author = author;
-        game.price = price;
-        game.releaseDate = releaseDate;
-        game.rating = rating;
-        game.category = category;
-        return game;
+    public void updatePrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateCategory(Category category) {
+        this.category = category;
     }
 }

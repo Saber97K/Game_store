@@ -32,11 +32,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query("SELECT g FROM Game g WHERE LOWER(g.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Game> searchByTitle(@Param("keyword") String keyword, Pageable pageable);
 
-    List<Game> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(String title, String author);
-
-    @Query("SELECT g FROM Game g WHERE g.releaseDate > :since")
-    List<Game> findRecentlyReleased(@Param("since") LocalDateTime since);
-
     long countByCategoryId(Long categoryId);
 
     List<Game> findByRatingGreaterThan(BigDecimal rating);
